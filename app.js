@@ -11,26 +11,12 @@ app.use(express.static('public'));
 // Our first route:
 app.get('/home', (request, response, next) => {
   console.log(request);
-  response.send('<h1>Welcome Ironhacker. :)</h1>');
+  response.sendFile(__dirname + '/views/home-page.html');
 });
 
 //our second route
 app.get('/cat', (request, response, next) => {
-    response.send(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <title>Cat</title>
-          <link rel="stylesheet" href="/stylesheets/style.css" />
-        </head>
-        <body>
-          <h1>Cat</h1>
-          <p>This is my second route</p>
-          <img src="/images/cool-cat.jpg" />
-        </body>
-      </html>
-    `);
+    response.sendFile(__dirname + '/views/cat-page.html')
   });
 
 // Start the server
