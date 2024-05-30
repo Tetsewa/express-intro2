@@ -8,7 +8,13 @@ const logger = require('morgan');
 
 const app = express();
 
-// Setup the request logger to run on each request   // <== ADD
+function myMiddleware(req, res, next) {
+  console.log('myMiddleware was called!');
+  req.secretValue = 'swordfish';
+  next();
+}
+// MIDDLEWARE
+// Setup the request logger to run on each request   
 app.use(logger('dev'));                       
 // Make the static files inside of the `public/` folder publicly accessible
 app.use(express.static('public'));
@@ -16,29 +22,26 @@ app.use(express.static('public'));
 // JSON middleware parses (decodes) the incoming HTTP request bodies that contain JSON data and makes the data accessible on the req.body property as a JavaScript object.
 app.use(express.json()); 
 
-app.use(myMiddleware);
-
-function myMiddleware(request, response, next) {
-  console.log('myMiddleware was called!');
-  next();
-}
+// Custom middleware example
+//app.use(myMiddleware);
 
 
-// Our first route:
+//routes
+// Our first route: GET /home route
 app.get('/home', (request, response, next) => {
   console.log(request);
   response.sendFile(__dirname + '/views/home-page.html');
 });
 
-//our second route
+//our second route: GET /cat route
 app.get('/cat', (request, response, next) => {
     response.sendFile(__dirname + '/views/cat-page.html')
   });
-//our third route-understanding middleware
+//our third route- GET /test route-understanding the middleware flow
 app.get('/test', (request, response, next) => {
     response.send('We made it to test!');
   });
-//our fourth route
+//our fourth route: GET /data route
 app.get('/data', (req, res) => {
   const user = {
     name: "Jane Doe",
